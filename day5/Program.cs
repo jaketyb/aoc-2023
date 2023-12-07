@@ -14,6 +14,10 @@ var seeds = ParseSeedsPart1(seedsInput[0]);
 
 Part2();
 
+// Could we function as part1, but when we look through maps keep track of the smallest different between current source and upper source bound
+// Return the smallest diff along with seedLocation
+// Skip the next x number of seeds, where x = smallestDiff
+
 void Part1()
 {
     long? minLocation = null;
