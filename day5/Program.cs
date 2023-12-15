@@ -1,10 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Mail;
-using System.Text.Encodings.Web;
-
-var almanacInput = File.ReadAllLines("almanac.txt");
+﻿var almanacInput = File.ReadAllLines("almanac.txt");
 var seedsInput = File.ReadAllLines("seeds.txt");
 
 var almanac = ParseAlmanac(almanacInput);
@@ -12,11 +6,8 @@ var reversedAlmanac = almanac.Reverse();
 
 var seeds = ParseSeedsPart1(seedsInput[0]);
 
+Part1();
 Part2();
-
-// Could we function as part1, but when we look through maps keep track of the smallest different between current source and upper source bound
-// Return the smallest diff along with seedLocation
-// Skip the next x number of seeds, where x = smallestDiff
 
 void Part1()
 {
@@ -35,27 +26,8 @@ void Part1()
     Console.WriteLine(minLocation);
 }
 
-void Part2Force()
-{
-    var part2Seeds = ParseSeedsPart2(seedsInput[0]);
-
-    foreach (var seedRange in part2Seeds)
-    {
-        for (var i = seedRange.min; i <= seedRange.max; i++)
-        {
-            var location = GetLocationForSeed(i);
-
-            if (location < 59370573)
-            {
-                Console.WriteLine($"Found location {location}");
-            }
-        }
-    }
-}
-
 void Part2()
 {
-    var part1Seeds = ParseSeedsPart1(seedsInput[0]);
     var part2Seeds = ParseSeedsPart2(seedsInput[0]);
 
     var location = 0;
@@ -143,7 +115,7 @@ long GetSeedForLocation(long location)
 long GetSourceFromDestination(long destination, IEnumerable<MapValue> mapValues)
 {
     var targetMap = mapValues.FirstOrDefault(
-        mp => mp.DestinationStart <= destination && mp.Range + mp.DestinationStart >= destination
+        mp => mp.DestinationStart <= destination && mp.DestinationEnd > destination
     );
 
     if (targetMap == null)
@@ -167,7 +139,7 @@ long GetLocationForSeed(long seed)
 long GetDestinationFromSource(long source, IEnumerable<MapValue> mapValues)
 {
     var targetMap = mapValues.FirstOrDefault(
-        mp => mp.SourceStart <= source && mp.Range + mp.SourceStart >= source
+        mp => mp.SourceStart <= source && mp.Range + mp.SourceStart > source
     );
 
     if (targetMap == null)

@@ -10,4 +10,14 @@ public class MapValue
     public long DestinationStart { get; }
     public long SourceStart { get; }
     public long Range { get; }
+
+    public long SourceEnd
+    {
+        get => SourceStart + Range;
+    }
+
+    public long DestinationEnd
+    {
+        get => DestinationStart + Range;
+    }
 }
